@@ -128,7 +128,7 @@ workflows:
           filters: { branches: { only: /.*(app_name2|all-app).*/ } }
           type: approval
           requires:
-            - "app_name2 (plan)"
+            - "app_name2 (test)"
 
       - "app_name2 (deploy)":
           filters: { branches: { only: /.*(app_name2|all-app).*/ } }
@@ -154,7 +154,7 @@ workflows:
           filters: { branches: { only: /.*(app_name1|all-app).*/ } }
           type: approval
           requires:
-            - "app_name1 (plan)"
+            - "app_name1 (test)"
 
       - "app_name1 (deploy)":
           filters: { branches: { only: /.*(app_name1|all-app).*/ } }
