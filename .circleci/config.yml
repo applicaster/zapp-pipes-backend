@@ -120,23 +120,23 @@ workflows:
           <<: *RUN_ONLY_ON_MASTER
 
       - "app_name2 (test)":
-          filters: { branches: { only: /.*(app_name2|all-app).*/ } }
+          <<: *RUN_ONLY_ON_MASTER
           requires:
             - "app_name2 (init)"
 
       - "app_name2 (approve)":
-          filters: { branches: { only: /.*(app_name2|all-app).*/ } }
+          <<: *RUN_ONLY_ON_MASTER
           type: approval
           requires:
             - "app_name2 (test)"
 
       - "app_name2 (deploy)":
-          filters: { branches: { only: /.*(app_name2|all-app).*/ } }
+          <<: *RUN_ONLY_ON_MASTER
           requires:
             - "app_name2 (approve)"
 
       - "app_name2 (sanity)":
-          filters: { branches: { only: /.*(app_name2|all-app).*/ } }
+          <<: *RUN_ONLY_ON_MASTER
           requires:
             - "app_name2 (deploy)"
 
