@@ -104,7 +104,7 @@ workflows:
           <<: *RUN_ONLY_ON_MASTER
           type: approval
           requires:
-            - "app_name1 (plan)"
+            - "app_name1 (test)"
 
       - "app_name1 (deploy)":
           <<: *RUN_ONLY_ON_MASTER
@@ -180,7 +180,7 @@ workflows:
           filters: { branches: { only: /.*(app_name2|all-app).*/ } }
           type: approval
           requires:
-            - "app_name2 (plan)"
+            - "app_name2 (test)"
 
       - "app_name2 (deploy)":
           filters: { branches: { only: /.*(app_name2|all-app).*/ } }
