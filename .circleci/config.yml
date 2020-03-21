@@ -90,7 +90,7 @@ jobs:
 
 workflows:
   version: 2
-  ensure_all_applied:
+  deploy_all:
     jobs:
       - "app_name1 (init)":
           <<: *RUN_ONLY_ON_MASTER
@@ -104,7 +104,7 @@ workflows:
           <<: *RUN_ONLY_ON_MASTER
           type: approval
           requires:
-            - "app_name1 (plan)"
+            - "app_name1 (test)"
 
       - "app_name1 (deploy)":
           <<: *RUN_ONLY_ON_MASTER
@@ -114,7 +114,7 @@ workflows:
       - "app_name1 (sanity)":
           <<: *RUN_ONLY_ON_MASTER
           requires:
-            - "app_name1 (apply)"
+            - "app_name1 (deploy)"
 
       - "app_name2 (init)":
           <<: *RUN_ONLY_ON_MASTER
@@ -128,7 +128,7 @@ workflows:
           filters: { branches: { only: /.*(app_name2|all-app).*/ } }
           type: approval
           requires:
-            - "app_name2 (plan)"
+            - "app_name2 (test)"
 
       - "app_name2 (deploy)":
           filters: { branches: { only: /.*(app_name2|all-app).*/ } }
@@ -138,7 +138,7 @@ workflows:
       - "app_name2 (sanity)":
           filters: { branches: { only: /.*(app_name2|all-app).*/ } }
           requires:
-            - "app_name2 (apply)"
+            - "app_name2 (deploy)"
 
   "app_name1":
     jobs:
@@ -154,7 +154,7 @@ workflows:
           filters: { branches: { only: /.*(app_name1|all-app).*/ } }
           type: approval
           requires:
-            - "app_name1 (plan)"
+            - "app_name1 (test)"
 
       - "app_name1 (deploy)":
           filters: { branches: { only: /.*(app_name1|all-app).*/ } }
@@ -164,7 +164,7 @@ workflows:
       - "app_name1 (sanity)":
           filters: { branches: { only: /.*(app_name1|all-app).*/ } }
           requires:
-            - "app_name1 (apply)"
+            - "app_name1 (deploy)"
 
   "app_name2":
     jobs:
@@ -180,7 +180,7 @@ workflows:
           filters: { branches: { only: /.*(app_name2|all-app).*/ } }
           type: approval
           requires:
-            - "app_name2 (plan)"
+            - "app_name2 (test)"
 
       - "app_name2 (deploy)":
           filters: { branches: { only: /.*(app_name2|all-app).*/ } }
@@ -190,4 +190,4 @@ workflows:
       - "app_name2 (sanity)":
           filters: { branches: { only: /.*(app_name2|all-app).*/ } }
           requires:
-            - "app_name2 (apply)"
+            - "app_name2 (deploy)"
