@@ -1,0 +1,193 @@
+version: 2
+references:
+  job_defaults: &job_defaults
+    machine: true
+    working_directory: ~/app
+
+  RUN_ONLY_ON_MASTER: &RUN_ONLY_ON_MASTER
+    filters:
+      branches:
+        only: master
+
+  INIT: &INIT
+    <<: *job_defaults
+    steps:
+      - checkout
+      - run:
+          name: run INIT
+          command: |
+            echo "start INIT"
+
+  TEST: &TEST
+    <<: *job_defaults
+    steps:
+      - checkout
+      - run:
+          name: run TEST
+          command: |
+            echo "start TEST"
+
+  DEPLOY: &DEPLOY
+    <<: *job_defaults
+    steps:
+      - checkout
+      - run:
+          name: run DEPLOY
+          command: |
+            echo "start DEPLOY"
+
+  SANITY: &SANITY
+    <<: *job_defaults
+    steps:
+      - checkout
+      - run:
+          name: run SANITY
+          command: |
+            echo "start SANITY"
+
+jobs:
+  ########################## app_name1
+  "app_name1 (init)":
+    <<: *INIT
+    environment:
+      APP_NAME: app_name1
+
+  "app_name1 (test)":
+    <<: *TEST
+    environment:
+      APP_NAME: app_name1
+
+  "app_name1 (deploy)":
+    <<: *DEPLOY
+    environment:
+      APP_NAME: app_name1
+
+  "app_name1 (sanity)":
+    <<: *SANITY
+    environment:
+      APP_NAME: app_name1
+
+  ########################## app_name2
+  "app_name2 (init)":
+    <<: *INIT
+    environment:
+      APP_NAME: app_name2
+
+  "app_name2 (test)":
+    <<: *TEST
+    environment:
+      APP_NAME: app_name2
+
+  "app_name2 (deploy)":
+    <<: *DEPLOY
+    environment:
+      APP_NAME: app_name2
+
+  "app_name2 (sanity)":
+    <<: *SANITY
+    environment:
+      APP_NAME: app_name2
+
+workflows:
+  version: 2
+  ensure_all_applied:
+    jobs:
+      - "app_name1 (init)":
+          <<: *RUN_ONLY_ON_MASTER
+
+      - "app_name1 (test)":
+          <<: *RUN_ONLY_ON_MASTER
+          requires:
+            - "app_name1 (init)"
+
+      - "app_name1 (approve)":
+          <<: *RUN_ONLY_ON_MASTER
+          type: approval
+          requires:
+            - "app_name1 (plan)"
+
+      - "app_name1 (deploy)":
+          <<: *RUN_ONLY_ON_MASTER
+          requires:
+            - "app_name1 (approve)"
+
+      - "app_name1 (sanity)":
+          <<: *RUN_ONLY_ON_MASTER
+          requires:
+            - "app_name1 (apply)"
+
+      - "app_name2 (init)":
+          <<: *RUN_ONLY_ON_MASTER
+
+      - "app_name2 (test)":
+          filters: { branches: { only: /.*(app_name2|all-app).*/ } }
+          requires:
+            - "app_name2 (init)"
+
+      - "app_name2 (approve)":
+          filters: { branches: { only: /.*(app_name2|all-app).*/ } }
+          type: approval
+          requires:
+            - "app_name2 (plan)"
+
+      - "app_name2 (deploy)":
+          filters: { branches: { only: /.*(app_name2|all-app).*/ } }
+          requires:
+            - "app_name2 (approve)"
+
+      - "app_name2 (sanity)":
+          filters: { branches: { only: /.*(app_name2|all-app).*/ } }
+          requires:
+            - "app_name2 (apply)"
+
+  "app_name1":
+    jobs:
+      - "app_name1 (init)":
+          filters: { branches: { only: /.*(app_name1|all-app).*/ } }
+
+      - "app_name1 (test)":
+          filters: { branches: { only: /.*(app_name1|all-app).*/ } }
+          requires:
+            - "app_name1 (init)"
+
+      - "app_name1 (approve)":
+          filters: { branches: { only: /.*(app_name1|all-app).*/ } }
+          type: approval
+          requires:
+            - "app_name1 (plan)"
+
+      - "app_name1 (deploy)":
+          filters: { branches: { only: /.*(app_name1|all-app).*/ } }
+          requires:
+            - "app_name1 (approve)"
+
+      - "app_name1 (sanity)":
+          filters: { branches: { only: /.*(app_name1|all-app).*/ } }
+          requires:
+            - "app_name1 (apply)"
+
+  "app_name2":
+    jobs:
+      - "app_name2 (init)":
+          filters: { branches: { only: /.*(app_name2|all-apps).*/ } }
+
+      - "app_name2 (test)":
+          filters: { branches: { only: /.*(app_name2|all-app).*/ } }
+          requires:
+            - "app_name2 (init)"
+
+      - "app_name2 (approve)":
+          filters: { branches: { only: /.*(app_name2|all-app).*/ } }
+          type: approval
+          requires:
+            - "app_name2 (plan)"
+
+      - "app_name2 (deploy)":
+          filters: { branches: { only: /.*(app_name2|all-app).*/ } }
+          requires:
+            - "app_name2 (approve)"
+
+      - "app_name2 (sanity)":
+          filters: { branches: { only: /.*(app_name2|all-app).*/ } }
+          requires:
+            - "app_name2 (apply)"
