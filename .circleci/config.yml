@@ -1,7 +1,8 @@
 version: 2
 references:
   job_defaults: &job_defaults
-    machine: true
+    docker:
+      - image: google/cloud-sdk
     working_directory: ~/app
 
   RUN_ONLY_ON_MASTER: &RUN_ONLY_ON_MASTER
