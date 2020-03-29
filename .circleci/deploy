@@ -13,7 +13,7 @@ APP_NAME="$1"
 [ "$APP_NAME" == "" ] && fail "required: <APP_NAME> params"
 
 curl -sL https://deb.nodesource.com/setup_12.x | bash -
-apt-get install -y nodejs unzip
+apt-get install -y nodejs unzip zip
 npm install yaml@1.8.3
 
 FOLDER_PATH="/tmp/apps/${APP_NAME}"
