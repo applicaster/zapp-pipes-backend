@@ -20,5 +20,7 @@ FOLDER_PATH="/tmp/apps/${APP_NAME}"
 
 node .circleci/set_deployment_folder.js $APP_NAME $FOLDER_PATH
 
+echo "cd to: $FOLDER_PATH"
 cd $FOLDER_PATH
+echo "gcloud builds submit"
 gcloud builds submit --config cloudbuild.json ./
