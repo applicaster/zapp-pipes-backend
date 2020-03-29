@@ -14,23 +14,25 @@ function run(app_name,zip_folder_path){
         const appFolder = `apps/${app_name}/`;
         console.log("getConfig")
         const config = getConfig(appFolder);
-        installNPM(appFolder,config.app.npm_packages,config.app.npm_version)
-        console.log("createZipFile")
-        createZipFile(appFolder, config.app.npm_packages);
-        console.log("deployToServer")
-        deployToServer(appFolder,config.app.deploy,zip_folder_path);
+        syncWorkflow(config,appFolder)
     }
     catch(ex){
         console.log("ERROR",ex);
     }
 }
-
+async function syncWorkflow(config,folder,zip_folder_path){
+    await installNPM(folder,config.app.npm_packages,config.app.npm_version)
+    console.log("createZipFile")
+    await createZipFile(folder, config.app.npm_packages);
+    console.log("deployToServer")
+    await deployToServer(folder,config.app.deploy,zip_folder_path);
+}
 async function deployToServer(folder,zip_folder_path){
     console.log(`delete folder /tmp/${folder}`)
     await exec(`rm -rf /tmp/${folder}`);
     console.log(`mkdir folder /tmp/${folder}`)
     await exec(`mkdir -p /tmp/${folder}`);
-    console.log(`unzip to /tmp/`)
+    console.log(`unzip to /tmp/`);
     await exec(`cd ./${folder} && unzip server.zip -d /tmp/${folder} > /tmp/null`);
     await exec(`cd ./${folder} && npm i`);
     await exec(`cd ./${folder} && cp cloudbuild.json  /tmp/${folder}`);
@@ -57,7 +59,8 @@ async function installNPM(folder,packages_name,package_version){
     await exec(`npm i --prefix ${folder} ${packages_name}@${package_version}`);
     await exec(`cp ./${folder}.babelrc ./${folder}node_modules/${packages_name}/`);
     await exec(`cp ./${folder}/.npmrc ./${folder}node_modules/${packages_name}/`);
-    await exec(`npm --prefix ./${folder}node_modules/${packages_name} install`);
+    console.log(`npm --prefix ./${folder}node_modules/${packages_name} install`)
+    // await exec(`npm --prefix ./${folder}node_modules/${packages_name} install`);
 
     // this lines is only for test/run-local
     //console.log("node starting at localhost:8080")
