@@ -1,0 +1,21 @@
+#!/bin/bash
+
+set -e
+# set -x
+set -o pipefail
+
+function fail() {
+  echo "$1"
+  exit 1
+}
+
+APP_NAME="$1"
+[ "$APP_NAME" == "" ] && fail "required: <APP_NAME> params"
+
+npm install yaml@1.8.3
+FOLDER_PATH="/tmp/apps/${APP_NAME}"
+
+node .circleci/set_deployment_folder.js $APP_NAME $FOLDER_PATH
+
+cd $FOLDER_PATH
+gcloud builds submit --config cloudbuild.json ./

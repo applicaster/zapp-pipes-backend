@@ -34,7 +34,9 @@ references:
       - run:
           name: run DEPLOY
           command: |
-            echo "start DEPLOY"
+            echo "starting DEPLOY"
+            bash .circleci/deploy $APP_NAME
+
 
   SANITY: &SANITY
     <<: *job_defaults
