@@ -57,7 +57,7 @@ async function installNPM(folder,packages_name,package_version){
     await exec(`npm i --prefix ${folder} ${packages_name}@${package_version}`);
     await exec(`cp ./${folder}.babelrc ./${folder}node_modules/${packages_name}/`);
     await exec(`cp ./${folder}/.npmrc ./${folder}node_modules/${packages_name}/`);
-    /// await exec(`npm --prefix ./${folder}node_modules/${packages_name} install`);
+    await exec(`npm --prefix ./${folder}node_modules/${packages_name} install`);
 
     // this lines is only for test/run-local
     //console.log("node starting at localhost:8080")
