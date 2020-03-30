@@ -15,6 +15,7 @@ APP_NAME="$1"
 [ "$GOOGLE_ACCOUNT_SERVICE_EMAIL" == "" ] && fail "required: <GOOGLE_ACCOUNT_SERVICE> params"
 [ "$GOOGLE_PROJECT" == "" ] && fail "required: <GOOGLE_PROJECT> params"
 [ "$GOOGLE_APPS_SERVICE_JSON" == "" ] && fail "required: <GOOGLE_APPS_SERVICE_JSON> params"
+[ "$FIREBASE_TOKEN" == "" ] && fail "required: <FIREBASE_TOKEN> params"
 
 mkdir -p ~/.googlecloud
 # write service account access params
@@ -40,4 +41,4 @@ echo "cd to: $FOLDER_PATH"
 cd $FOLDER_PATH
 echo "gcloud builds submit"
 gcloud builds submit --config cloudbuild.json ./
-firebase deploy --project $APP_NAME --token $TOKEN
+firebase deploy --project $APP_NAME --token $FIREBASE_TOKEN
