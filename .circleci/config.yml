@@ -36,7 +36,7 @@ references:
           name: run DEPLOY
           command: |
             echo "starting DEPLOY"
-            bash .circleci/deploy $APP_NAME
+            bash .circleci/deploy_to_firebase_cloudrun $APP_NAME
 
 
   SANITY: &SANITY
