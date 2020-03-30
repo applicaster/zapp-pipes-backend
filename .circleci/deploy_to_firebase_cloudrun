@@ -30,6 +30,7 @@ echo "install nodejs zip unzip"
 curl -sL https://deb.nodesource.com/setup_12.x | bash -
 apt-get install -y nodejs unzip zip
 npm install yaml@1.8.3
+npm install -g firebase-tools@7.16.2
 
 FOLDER_PATH="/tmp/apps/${APP_NAME}"
 echo "run set_deployment_folder.js"
@@ -39,4 +40,4 @@ echo "cd to: $FOLDER_PATH"
 cd $FOLDER_PATH
 echo "gcloud builds submit"
 gcloud builds submit --config cloudbuild.json ./
-firebase deploy --project $APP_NAME
+firebase deploy --project $APP_NAME --token $TOKEN
