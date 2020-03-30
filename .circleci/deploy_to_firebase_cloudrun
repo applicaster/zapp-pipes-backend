@@ -14,14 +14,16 @@ APP_NAME="$1"
 
 [ "$GOOGLE_ACCOUNT_SERVICE_EMAIL" == "" ] && fail "required: <GOOGLE_ACCOUNT_SERVICE> params"
 [ "$GOOGLE_PROJECT" == "" ] && fail "required: <GOOGLE_PROJECT> params"
-[ "$GOOGLE_APPS_BACKEND_SERVICE_JSON" == "" ] && fail "required: <GOOGLE_APPS_BACKEND_SERVICE_JSON> params"
+[ "$GOOGLE_APPS_SERVICE_JSON" == "" ] && fail "required: <GOOGLE_APPS_SERVICE_JSON> params"
 
 mkdir -p ~/.googlecloud
 # write service account access params
 cat <<EOF > ~/.googlecloud/$GOOGLE_PROJECT
 ${GOOGLE_APPS_SERVICE_JSON}
 EOF
-
+cat ~/.googlecloud/$GOOGLE_PROJECT
+echo "GOOGLE_ACCOUNT_SERVICE_EMAIL $GOOGLE_ACCOUNT_SERVICE_EMAIL"
+echo "GOOGLE_PROJECT $GOOGLE_PROJECT"
 echo "gcloud login"
 gcloud auth activate-service-account $GOOGLE_ACCOUNT_SERVICE_EMAIL --key-file=$HOME/.googlecloud/$GOOGLE_PROJECT --project $GOOGLE_PROJECT
 echo "install nodejs zip unzip"
