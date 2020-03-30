@@ -16,12 +16,10 @@ APP_NAME="$1"
 [ "$GOOGLE_PROJECT" == "" ] && fail "required: <GOOGLE_PROJECT> params"
 [ "$GOOGLE_APPS_BACKEND_SERVICE_JSON" == "" ] && fail "required: <GOOGLE_APPS_BACKEND_SERVICE_JSON> params"
 
-GOOGLE_APPS_SERVICE_JSON="GOOGLE_APPS_SERVICE_JSON_${GOOGLE_PROJECT}"
 # write service account access params
 cat <<EOF > ~/.googlecloud/$GOOGLE_PROJECT
-${!GOOGLE_APPS_SERVICE_JSON}
+${GOOGLE_APPS_SERVICE_JSON}
 EOF
-echo "${!GOOGLE_APPS_SERVICE_JSON}"
 
 # gcloud login
 gcloud auth activate-service-account $GOOGLE_ACCOUNT_SERVICE_EMAIL --key-file=$HOME/.googlecloud/$GOOGLE_PROJECT --project $GOOGLE_PROJECT
