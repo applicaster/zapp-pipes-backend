@@ -12,7 +12,7 @@ function fail() {
 APP_NAME="$1"
 [ "$APP_NAME" == "" ] && fail "required: <APP_NAME> params"
 
-[ "$GOOGLE_ACCOUNT_SERVICE" == "" ] && fail "required: <GOOGLE_ACCOUNT_SERVICE> params"
+[ "$GOOGLE_ACCOUNT_SERVICE_EMAIL" == "" ] && fail "required: <GOOGLE_ACCOUNT_SERVICE> params"
 [ "$GOOGLE_PROJECT" == "" ] && fail "required: <GOOGLE_PROJECT> params"
 [ "$GOOGLE_APPS_BACKEND_SERVICE_JSON" == "" ] && fail "required: <GOOGLE_APPS_BACKEND_SERVICE_JSON> params"
 
@@ -22,7 +22,7 @@ $GOOGLE_APPS_BACKEND_SERVICE_JSON
 EOF
 
 # gcloud login
-gcloud auth activate-service-account $GOOGLE_ACCOUNT_SERVICE --key-file=$HOME/.googlecloud/$GOOGLE_PROJECT --project $GOOGLE_PROJECT
+gcloud auth activate-service-account $GOOGLE_ACCOUNT_SERVICE_EMAIL --key-file=$HOME/.googlecloud/$GOOGLE_PROJECT --project $GOOGLE_PROJECT
 
 curl -sL https://deb.nodesource.com/setup_12.x | bash -
 apt-get install -y nodejs unzip zip
@@ -36,3 +36,4 @@ echo "cd to: $FOLDER_PATH"
 cd $FOLDER_PATH
 echo "gcloud builds submit"
 gcloud builds submit --config cloudbuild.json ./
+firebase deploy --project $APP_NAME
