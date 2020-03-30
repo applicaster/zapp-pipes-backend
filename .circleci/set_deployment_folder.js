@@ -38,6 +38,8 @@ async function deployToServer(folder,zip_folder_path){
     await exec(`cd ./${folder} && cp cloudbuild.json  /tmp/${folder}`);
     await exec(`cd ./${folder} && cp package-lock.json  /tmp/${folder}`);
     await exec(`cd ./${folder} && cp Dockerfile  /tmp/${folder}`);
+    await exec(`cd ./${folder} && cp firebase.json  /tmp/${folder}`);
+
     // console.log(`gcloud builds`)
     // await exec(`cd /tmp/${folder} && gcloud builds submit --config cloudbuild.json ./`);
 
