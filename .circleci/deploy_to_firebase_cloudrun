@@ -41,4 +41,5 @@ echo "cd to: $FOLDER_PATH"
 cd $FOLDER_PATH
 echo "gcloud builds submit"
 gcloud builds submit --config cloudbuild.json ./
+echo "firebase deploy"
 firebase deploy --project $GOOGLE_PROJECT --token $FIREBASE_TOKEN
