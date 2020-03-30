@@ -16,6 +16,7 @@ APP_NAME="$1"
 [ "$GOOGLE_PROJECT" == "" ] && fail "required: <GOOGLE_PROJECT> params"
 [ "$GOOGLE_APPS_BACKEND_SERVICE_JSON" == "" ] && fail "required: <GOOGLE_APPS_BACKEND_SERVICE_JSON> params"
 
+mkdir -p ~/.googlecloud
 # write service account access params
 cat <<EOF > ~/.googlecloud/$GOOGLE_PROJECT
 ${GOOGLE_APPS_SERVICE_JSON}
