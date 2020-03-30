@@ -22,15 +22,15 @@ cat <<EOF > ~/.googlecloud/$GOOGLE_PROJECT
 ${GOOGLE_APPS_SERVICE_JSON}
 EOF
 
-# gcloud login
+echo "gcloud login"
 gcloud auth activate-service-account $GOOGLE_ACCOUNT_SERVICE_EMAIL --key-file=$HOME/.googlecloud/$GOOGLE_PROJECT --project $GOOGLE_PROJECT
-
+echo "install nodejs zip unzip"
 curl -sL https://deb.nodesource.com/setup_12.x | bash -
 apt-get install -y nodejs unzip zip
 npm install yaml@1.8.3
 
 FOLDER_PATH="/tmp/apps/${APP_NAME}"
-
+echo "run set_deployment_folder.js"
 node .circleci/set_deployment_folder.js $APP_NAME $FOLDER_PATH
 
 echo "cd to: $FOLDER_PATH"
