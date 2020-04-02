@@ -35,7 +35,7 @@ npm install -g firebase-tools@7.16.2
 
 FOLDER_PATH="/tmp/apps/${APP_NAME}"
 echo "run set_deployment_folder.js"
-node .circleci/set_deployment_folder.js $APP_NAME $FOLDER_PATH
+node .circleci/deploy_to_firebase_cloudrun.js $APP_NAME $FOLDER_PATH
 
 echo "cd to: $FOLDER_PATH"
 cd $FOLDER_PATH
@@ -44,4 +44,4 @@ gcloud builds submit --config cloudbuild.json ./
 echo "firebase deploy"
 FIREBASE_PROJECT=$GOOGLE_PROJECT
 firebase deploy --project $FIREBASE_PROJECT --token $FIREBASE_TOKEN
-echo Hosting Domain: $FIREBASE_PROJECT.firebaseapp.com
+echo "Hosting Domain: $FIREBASE_PROJECT.firebaseapp.com"
