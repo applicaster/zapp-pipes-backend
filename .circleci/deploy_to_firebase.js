@@ -14,6 +14,7 @@ function run(app_name,zip_folder_path){
         const appFolder = `apps/${app_name}/`;
         console.log("getConfig")
         const config = getConfig(appFolder);
+        console.log("syncWorkflow")
         syncWorkflow(config,appFolder)
     }
     catch(ex){
@@ -21,6 +22,7 @@ function run(app_name,zip_folder_path){
     }
 }
 async function syncWorkflow(config,folder,zip_folder_path){
+    console.log("installNPM")
     await installNPM(folder,config.app.npm_packages,config.app.npm_version)
     console.log("createZipFile")
     await createZipFile(folder, config.app.npm_packages);
@@ -32,22 +34,29 @@ async function deployToServer(folder,zip_folder_path){
     await exec(`rm -rf /tmp/${folder}`);
     console.log(`mkdir folder /tmp/${folder}`)
     await exec(`mkdir -p /tmp/${folder}`);
+    await exec(`mkdir -p /tmp/${folder}/functionsES6/`);
     console.log(`unzip to /tmp/`);
-    await exec(`cd ./${folder} && unzip server.zip -d /tmp/${folder} > /tmp/null`);
-    await exec(`cd ./${folder} && npm i`);
-    await exec(`cd ./${folder} && cp cloudbuild.json  /tmp/${folder}`);
-    await exec(`cd ./${folder} && cp package-lock.json  /tmp/${folder}`);
-    await exec(`cd ./${folder} && cp Dockerfile  /tmp/${folder}`);
+    await exec(`cd ./${folder} && unzip server.zip -d /tmp/${folder}/functionsES6/ > /tmp/null`);
+    await exec(`cd ./${folder} && cp -R public /tmp/${folder}/public`);
+    // await exec(`cd ./${folder} && cp cloudbuild.json  /tmp/${folder}`);
+    await exec(`cd ./${folder} && cp package-lock.json  /tmp/${folder}/functionsES6/`);
+    // await exec(`cd ./${folder} && cp Dockerfile  /tmp/${folder}`);
     await exec(`cd ./${folder} && cp firebase.json  /tmp/${folder}`);
+    await exec(`cd ./${folder} && cp package.json  /tmp/${folder}`);
+    await exec(`cd ./${folder} && cp package-lock.json  /tmp/${folder}`);
+    await exec(`cp ./${folder}.babelrc /tmp/${folder}`)
+    await exec(`cd ./${folder} && cp index.js  /tmp/${folder}/functionsES6/`);
+    console.log(`npm i`);
+    await exec(`cd /tmp/${folder} && npm i  babel-cli babel-preset-es2015 babel-preset-stage-0  babel-preset-env babel-plugin-transform-runtime@6.23.0 babel-runtime@6.23.0`);
+    await exec(`cd /tmp/${folder} && npm run package-functions`);
+    let jsonString = fs.readFileSync(`/tmp/${folder}functions/package.json`);
+    let json = JSON.parse(jsonString);
+    json.main = "index.js"
+    json.engines = {"node": "8"}
+    let data = JSON.stringify(json,null,4);
+    fs.writeFileSync(`/tmp/${folder}functions/package.json`, data);
+    await exec(`cd /tmp/${folder}functions/ && npm i && npm i firebase-admin firebase-functions`);// hapi@16.1.0
 
-    // console.log(`gcloud builds`)
-    // await exec(`cd /tmp/${folder} && gcloud builds submit --config cloudbuild.json ./`);
-
-
-    // cp ./apps/app_name1/cloudbuild.json ./apps/app_name1/node_modules/@applicaster/zapp-pipes-provider-mpx/
-    // cp ./apps/app_name1/Dockerfile ./apps/app_name1/node_modules/@applicaster/zapp-pipes-provider-mpx/
-    // cd ./apps/app_name1/node_modules/@applicaster/zapp-pipes-provider-mpx/
-    // gcloud builds submit --config cloudbuild.json ./
 }
 
 async function createZipFile(folder,packages_name){

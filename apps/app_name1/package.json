@@ -1,0 +1,107 @@
+{
+  "_from": "backend",
+  "_id": "backend",
+  "_inBundle": false,
+  "_integrity": "sha512-fFDWVynh10AuK5qqjkLPVohyBUah23bPx8/KBiw9aozywMz5Ty0r0HZqzzkZINmpvh8LXAJpvsWTaT4BZOR6Pw==",
+  "_location": "/@applicaster/zapp-pipes-provider-mpx",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "@applicaster/zapp-pipes-provider-mpx@1.2.1",
+    "name": "backend",
+    "escapedName": "@applicaster%2fzapp-pipes-provider-mpx",
+    "scope": "@applicaster",
+    "rawSpec": "1.2.1",
+    "saveSpec": null,
+    "fetchSpec": "1.2.1"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/@applicaster/zapp-pipes-provider-mpx/-/zapp-pipes-provider-mpx-1.2.1.tgz",
+  "_shasum": "11b9ef09c48821b9f06131cde28085d71e371a69",
+  "_spec": "@applicaster/zapp-pipes-provider-mpx@1.2.1",
+  "_where": "/Users/zloof/git/zapp-pipes-backend",
+  "author": {
+    "name": "applicaster"
+  },
+  "bugs": {
+    "url": "https://github.com/applicaster/zapp-pipes-provider-mpx.git"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "@applicaster/zapp-pipes-provider-mpx": "^1.2.1",
+    "axios": "^0.16.2",
+    "btoa": "^1.2.1",
+    "firebase-functions": "^3.6.0",
+    "hapi": "^18.1.0",
+    "moment": "^2.24.0"
+  },
+  "deprecated": false,
+  "description": "MPX datasource provider",
+  "devDependencies": {
+    "@applicaster/zapp-pipes-dev-kit": "^1.4.1",
+    "babel-cli": "^6.24.0",
+    "babel-eslint": "^10.0.2",
+    "babel-jest": "^22.4.1",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.3.2",
+    "babel-preset-stage-0": "^6.22.0",
+    "babel-register": "^6.26.0",
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-config-prettier": "^4.3.0",
+    "eslint-plugin-babel": "^5.3.0",
+    "eslint-plugin-import": "^2.17.3",
+    "eslint-plugin-jest": "^22.6.4",
+    "jest": "^22.4.2",
+    "nock": "^9.2.3",
+    "nodemon": "^1.11.0",
+    "prettier": "^1.18.2",
+    "ramda": "^0.25.0",
+    "sinon": "^4.4.2",
+    "webpack": "^3.7.1",
+    "webpack-dev-server": "^2.9.1"
+  },
+  "homepage": "https://github.com/applicaster/zapp-pipes-provider-mpx.git#readme",
+  "jest": {
+    "testRegex": "/__tests__/.*(\\.test.js|\\test.jsx)$",
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "jsx"
+    ],
+    "modulePaths": [
+      "<rootDir>",
+      "<rootDir>/node_modules"
+    ],
+    "collectCoverageFrom": [
+      "packages/**/*.js"
+    ],
+    "testEnvironment": "node"
+  },
+  "keywords": [
+    "applicaster",
+    "datasource",
+    "zapp-pipes"
+  ],
+  "license": "UNLICENSED",
+  "main": "lib/index.js",
+  "name": "backend",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/applicaster/zapp-pipes-provider-mpx.git"
+  },
+  "scripts": {
+    "build": "rm -rf lib && NODE_ENV=production node_modules/.bin/babel src -d lib",
+    "prepublish": "npm run build",
+    "start": "nodemon -L --watch . server.js --exec node_modules/.bin/babel-node --inspect",
+    "start:hot": "babel-node webpack-hot.js --inspect=0.0.0.0:9229",
+    "test": "jest",
+    "test:integration": "jest integration.test.js",
+    "package-functions": "babel 'functionsES6' --out-dir 'functions' --presets=es2015 --copy-files --ignore 'node_modules'"
+  },
+  "version": "1.2.1"
+}
