@@ -55,7 +55,7 @@ async function deployToServer(folder,zip_folder_path){
     json.engines = {"node": "8"}
     let data = JSON.stringify(json,null,4);
     fs.writeFileSync(`/tmp/${folder}functions/package.json`, data);
-    await exec(`cd /tmp/${folder}functions/ && npm i && npm i firebase-admin firebase-functions`);// hapi@16.1.0
+    await exec(`cd /tmp/${folder}functions/ && npm i && npm i firebase-admin firebase-functions hapi@16.1.0`);//
 
 }
 
