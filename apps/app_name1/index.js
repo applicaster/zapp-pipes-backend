@@ -1,82 +1,39 @@
-// const zappPipesDevKit = require('@applicaster/zapp-pipes-dev-kit');
-// const provider = require('./src');
+"use strict";
 
-// const zappPipesServer = zappPipesDevKit.createZappPipesServer({
-//   providers: [provider],
-//   options: {
-//     host: '0.0.0.0'
-//   }
-// });
+require("babel-core/register");
+require("babel-polyfill");
 
-// zappPipesServer.route({
-//   method: 'GET',
-//   path: '/{provider}/types',
-//   handler(req, reply) {
-//     reply(provider.manifest.handlers);
-//   },
-// });
+var functions = require('firebase-functions');
+var utils = require("./utils");
 
-// zappPipesServer.startServer();
+var provider = require('./src');
+var providerRoutes = utils.createRouterForProviders([provider]);
+console.log("zappPipesDevKit.providerRoutes", providerRoutes);
 
-const Hapi = require('hapi');
-const server = new Hapi.Server();
-const functions = require('firebase-functions');
+var Hapi = require('hapi');
+var server = new Hapi.Server();
 
 server.connection();
-
-const options = {
-    ops: {
-        interval: 1000
-    },
-    reporters: {
-        myConsoleReporter: [{
-            module: 'good-squeeze',
-            name: 'Squeeze',
-            args: [{ log: '*', response: '*' }]
-        }, {
-            module: 'good-console'
-        }, 'stdout']
-     }
-};
-
-server.route({
-    method: 'GET',
-    path: '/v1',
-    handler: function (request, reply) {
-        reply({data:'hello world from native hapi 2'});
-    }
-});
-// server.register({
-//     register: require('good'),
-//     options,
-// }, (err) => {
-
-//     if (err) {
-//         return console.error(err);
-//     }
-
-// });
-
-
+server.route(providerRoutes);
 
 // Create and Deploy Your First Cloud Functions
 // https://firebase.google.com/docs/functions/write-firebase-functions
-exports.v1 = functions.https.onRequest((event, resp) => {
-    const options = {
-        method: event.httpMethod,
-        url: event.path,
+exports.fetchData = functions.https.onRequest(function (event, resp) {
+    var options = {
+        method: event.method,
+        url: event.path + event._parsedUrl.search,
         payload: event.body,
         headers: event.headers,
         validate: false
     };
-    console.log(options);
     server.inject(options, function (res) {
-        const response = {
-            statusCode: res.statusCode,
-            body: res.result
-        };
+        resp.set('Cache-Control', 'public, max-age=30, s-maxage=60');
         resp.status(res.statusCode).send(res.result);
     });
     // resp.send("google function Hello world");
+});
 
+exports.test = functions.https.onRequest(function (event, resp) {
+    resp.set('Cache-Control', 'public, max-age=30, s-maxage=60');
+    resp.send(`test google function ${new Date().toString()}`);
 });

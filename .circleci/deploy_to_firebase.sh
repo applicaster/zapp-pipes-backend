@@ -45,5 +45,5 @@ echo "firebase deploy"
 FIREBASE_PROJECT=applicaster-audience
 
 firebase deploy --project $FIREBASE_PROJECT --token $FIREBASE_TOKEN
-firebase emulators:start --project applicaster-audience
+# firebase emulators:start --project applicaster-audience
 # echo "Hosting Domain: $FIREBASE_PROJECT.firebaseapp.com"

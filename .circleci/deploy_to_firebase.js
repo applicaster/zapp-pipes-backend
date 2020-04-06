@@ -37,6 +37,7 @@ async function deployToServer(folder,zip_folder_path){
     await exec(`mkdir -p /tmp/${folder}/functionsES6/`);
     console.log(`unzip to /tmp/`);
     await exec(`cd ./${folder} && unzip server.zip -d /tmp/${folder}/functionsES6/ > /tmp/null`);
+    await exec(`cd ./${folder} && cp -R utils /tmp/${folder}/functionsES6/utils`);
     await exec(`cd ./${folder} && cp -R public /tmp/${folder}/public`);
     // await exec(`cd ./${folder} && cp cloudbuild.json  /tmp/${folder}`);
     await exec(`cd ./${folder} && cp package-lock.json  /tmp/${folder}/functionsES6/`);
@@ -47,16 +48,18 @@ async function deployToServer(folder,zip_folder_path){
     await exec(`cp ./${folder}.babelrc /tmp/${folder}`)
     await exec(`cd ./${folder} && cp index.js  /tmp/${folder}/functionsES6/`);
     console.log(`npm i`);
-    await exec(`cd /tmp/${folder} && npm i  babel-cli babel-preset-es2015 babel-preset-stage-0  babel-preset-env babel-plugin-transform-runtime@6.23.0 babel-runtime@6.23.0`);
+    await exec(`cd /tmp/${folder} && npm i  babel-cli babel-preset-es2015 babel-preset-stage-0  babel-preset-env babel-plugin-transform-runtime@6.23.0 babel-runtime@6.23.0 @applicaster/zapp-pipes-dev-kit`);
     await exec(`cd /tmp/${folder} && npm run package-functions`);
     let jsonString = fs.readFileSync(`/tmp/${folder}functions/package.json`);
     let json = JSON.parse(jsonString);
     json.main = "index.js"
     json.engines = {"node": "8"}
+    var ramda = json.devDependencies.ramda;
+    delete json.devDependencies.ramda
+    json.dependencies.ramda = ramda ;
     let data = JSON.stringify(json,null,4);
     fs.writeFileSync(`/tmp/${folder}functions/package.json`, data);
-    await exec(`cd /tmp/${folder}functions/ && npm i && npm i firebase-admin firebase-functions hapi@16.1.0`);//
-
+    await exec(`cd /tmp/${folder}functions/ && npm i firebase firebase-admin firebase-functions hapi@16.1.0 babel-core babel-polyfill ramda raven-js query-string atob`);// @applicaster/zapp-pipes-dev-kit && npm i
 }
 
 async function createZipFile(folder,packages_name){
