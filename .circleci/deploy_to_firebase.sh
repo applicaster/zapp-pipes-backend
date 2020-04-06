@@ -16,22 +16,14 @@ APP_NAME="$1"
 # [ "$GOOGLE_PROJECT" == "" ] && fail "required: <GOOGLE_PROJECT> params"
 # [ "$GOOGLE_APPS_SERVICE_JSON" == "" ] && fail "required: <GOOGLE_APPS_SERVICE_JSON> params"
 [ "$FIREBASE_TOKEN" == "" ] && fail "required: <FIREBASE_TOKEN> params"
-
-mkdir -p ~/.googlecloud
-# write service account access params
-# cat <<EOF > ~/.googlecloud/$GOOGLE_PROJECT
-# ${GOOGLE_APPS_SERVICE_JSON}
-# EOF
-# cat ~/.googlecloud/$GOOGLE_PROJECT
 # echo "GOOGLE_ACCOUNT_SERVICE_EMAIL $GOOGLE_ACCOUNT_SERVICE_EMAIL"
 # echo "GOOGLE_PROJECT $GOOGLE_PROJECT"
-# echo "gcloud login"
-# gcloud auth activate-service-account $GOOGLE_ACCOUNT_SERVICE_EMAIL --key-file=$HOME/.googlecloud/$GOOGLE_PROJECT --project $GOOGLE_PROJECT
+
 echo "install nodejs zip unzip"
-# curl -sL https://deb.nodesource.com/setup_12.x | bash -
-# apt-get install -y nodejs unzip zip
-# npm install yaml@1.8.3
-# npm install -g firebase-tools@7.16.2
+curl -sL https://deb.nodesource.com/setup_12.x | bash -
+apt-get install -y nodejs unzip zip
+npm install yaml@1.8.3
+npm install -g firebase-tools@7.16.2
 
 FOLDER_PATH="/tmp/apps/${APP_NAME}"
 echo "deploy_to_firebase.js"
