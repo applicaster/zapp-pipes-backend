@@ -2,11 +2,12 @@
 
 require("babel-core/register");
 require("babel-polyfill");
-
 var functions = require('firebase-functions');
+var provider = require('@applicaster/zapp-pipes-provider-mpx');;
 var utils = require("./utils");
 
-var provider = require('./src');
+
+console.log("providers", provider);
 var providerRoutes = utils.createRouterForProviders([provider]);
 console.log("zappPipesDevKit.providerRoutes", providerRoutes);
 
@@ -34,6 +35,5 @@ exports.fetchData = functions.https.onRequest(function (event, resp) {
 });
 
 exports.test = functions.https.onRequest(function (event, resp) {
-    resp.set('Cache-Control', 'public, max-age=30, s-maxage=60');
-    resp.send(`test google function ${new Date().toString()}`);
+    resp.send(`4test google function ${new Date().toString()}`);
 });
