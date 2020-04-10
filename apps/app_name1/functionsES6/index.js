@@ -35,5 +35,5 @@ exports.fetchData = functions.https.onRequest(function (event, resp) {
 });
 
 exports.test = functions.https.onRequest(function (event, resp) {
-    resp.send(`4test google function ${new Date().toString()}`);
+    resp.send(`test google function ${new Date().toString()}`);
 });
