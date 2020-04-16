@@ -13,11 +13,16 @@ APP_NAME="$1"
 [ "$APP_NAME" == "" ] && fail "required: <APP_NAME> params"
 [ "$FIREBASE_TOKEN" == "" ] && fail "required: <FIREBASE_TOKEN> params"
 
-echo "install nodejs zip unzip"
-curl -sL https://deb.nodesource.com/setup_12.x | bash -
-apt-get install -y nodejs unzip zip
-npm install yaml@1.8.3
-npm install -g firebase-tools@7.16.2
+
+if ! [ -x "$(command -v apt-get)" ]; then
+  echo 'Error: apt-get is not installed.' >&2
+else
+  echo "install nodejs zip unzip"
+  curl -sL https://deb.nodesource.com/setup_12.x | bash -
+  apt-get install -y nodejs unzip zip
+  npm install yaml@1.8.3
+  npm install -g firebase-tools@7.16.2
+fi
 
 FOLDER_PATH="apps/${APP_NAME}/"
 echo "deploy_to_firebase.js"

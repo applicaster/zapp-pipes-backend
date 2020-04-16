@@ -34,7 +34,7 @@ async function deployToServer(folder){
     //registry.npmjs.org/:_authToken=${process.env.NPM_TOKEN}`);
 
     await exec(`cd ./${folder} && npm i`);
-    await exec(`cd ./${folder}/functions/ && npm i`);
+    await exec(`cd ./${folder}functions/ && npm i`);
 }
 
 async function getConfig(folderPath){

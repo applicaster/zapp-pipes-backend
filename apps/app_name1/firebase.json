@@ -4,7 +4,11 @@
     // Add the "rewrites" attribute within "hosting"
     "rewrites": [
     {
-      "source": "/*/fetchData",
+      "source": "/mpx/fetchData",
+      "function":"fetchData"
+    },
+    {
+      "source": "/funke/fetchData",
       "function":"fetchData"
     },
     {
