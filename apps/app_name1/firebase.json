@@ -1,0 +1,22 @@
+{
+    "hosting": {
+    "public": "public",
+    // Add the "rewrites" attribute within "hosting"
+    "rewrites": [
+    {
+      "source": "/*/fetchData",
+      "function":"fetchData"
+    },
+    {
+      "source": "/test",
+      "function":"test"
+    },
+    {
+      "source": "/v1",
+      "run": {
+        "serviceId": "npxdemo",  // "service name" (from when you deployed the container image)
+        "region": "us-central1"     // optional (if omitted, default is us-central1)
+      }
+    } ]
+  }
+}

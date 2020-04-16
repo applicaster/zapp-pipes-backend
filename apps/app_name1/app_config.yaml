@@ -1,0 +1,8 @@
+version: 1
+app:
+  id: app_name1_123
+  npm_packages: @applicaster/zapp-pipes-provider-mpx
+  npm_version: 1.2.1
+  deploy: deploy.sh
+  plugins:
+    demo@123

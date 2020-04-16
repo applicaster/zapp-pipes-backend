@@ -1,0 +1,39 @@
+{
+    "steps": [
+      {
+        "name": "gcr.io/cloud-builders/docker",
+        "args": [
+           "build",
+           "-t",
+           "gcr.io/applicaster-audience/npxdemo",
+           "."
+         ]
+     },
+     {
+        "name": "gcr.io/cloud-builders/docker",
+        "args": [
+           "push",
+           "gcr.io/applicaster-audience/npxdemo"
+         ]
+     },
+    {
+      "name": "gcr.io/cloud-builders/gcloud",
+      "args": [
+        "run",
+        "deploy",
+        "npxdemo",
+        "--image",
+        "gcr.io/applicaster-audience/npxdemo",
+        "--region",
+        "us-central1",
+        "--platform",
+        "managed",
+        "--allow-unauthenticated",
+        "--port",
+        "8080"
+      ]
+    }],
+    "images": [
+       "gcr.io/applicaster-audience/npxdemo"
+     ]
+  }
