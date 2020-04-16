@@ -17,6 +17,17 @@ var server = new Hapi.Server();
 server.connection();
 server.route(providerRoutes);
 
+server.route({
+    method: 'GET',
+    path: '/',
+    handler(req, reply) {
+      reply("provider.manifest.handlers");
+      return "hello"
+    },
+  });
+
+
+
 // Create and Deploy Your First Cloud Functions
 // https://firebase.google.com/docs/functions/write-firebase-functions
 exports.fetchData = functions.https.onRequest(function (event, resp) {
@@ -28,7 +39,7 @@ exports.fetchData = functions.https.onRequest(function (event, resp) {
         validate: false
     };
     server.inject(options, function (res) {
-        resp.set('Cache-Control', 'public, max-age=30, s-maxage=60');
+        //resp.set('Cache-Control', 'public, max-age=30, s-maxage=60');
         resp.status(res.statusCode).send(res.result);
     });
     // resp.send("google function Hello world");
